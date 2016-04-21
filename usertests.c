@@ -1714,7 +1714,8 @@ void countTest()
 void tmp(){
   int status = 10;
   int pid;
-//  int options = 0;
+  int pid2;
+  int options = 0;
   pid = fork();
   if(pid == 0){
    printf(1,"child, exit ... \n");
@@ -1723,9 +1724,21 @@ void tmp(){
     printf(1,"erro\n");
      exit(-2);
   }else{
-    printf(1, "i am parent of %d\n", pid);
-    int procid = wait(&status);
-    printf(1, "%d, %d\n", procid,status);
+    pid2 = fork();
+    if(pid2 == 0){
+      int procid = waitpid(pid, &status, options);
+      printf(1, "%d, %d\n", procid,status);
+      printf(1, "child2, exit.... \n");
+      exit(0);
+    }
+    else if(pid2 < 0){
+      printf(1,"error\n");
+      exit(-2);
+    }
+    else{
+      int procid = waitpid(pid2, &status, options);
+      printf(1, "%d, %d\n", procid,status);
+    }
   }
 }
 

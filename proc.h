@@ -68,6 +68,8 @@ struct proc {
   char name[16];               // Process name (debugging)
   int count;	      		//number of times syscall has been made
   int exitStatus;		//Status of the exit call
+  struct proc* waitOnMe[10];	//keeps tack of what processes
+  int waitOnMeSZ;		//track the size of wait on me
 };
 
 // Process memory is laid out contiguously, low addresses first:

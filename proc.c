@@ -158,6 +158,7 @@ fork(void)
  
   pid = np->pid;
   np->count = 0;
+  np->waitOnMeSZ = 0;
 
   // lock to force the compiler to emit the np->state write last.
   acquire(&ptable.lock);
@@ -197,6 +198,10 @@ exit(int status)
 
   // Parent might be sleeping in wait().
   wakeup1(proc->parent);
+  int i;
+  for(i = 0; i < proc->waitOnMeSZ; ++i){
+    wakeup1(proc->waitOnMe[i]);
+  }
 
   // Pass abandoned children to init.
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
@@ -368,7 +373,15 @@ waitpid(int pid, int* status, int options){
       release(&ptable.lock);
       return -1;
     }
-
+    if(proc->parent != p){
+      if(p->waitOnMeSZ != (sizeof(p->waitOnMe)/sizeof(p->waitOnMe[0]))){
+	  p->waitOnMe[(sizeof(p->waitOnMe)/sizeof(p->waitOnMe[0]))] = proc;
+	  p->waitOnMeSZ = p->waitOnMeSZ + 1;
+	}
+      else{
+	return -1;
+      }
+    }
     // Wait for children to exit.  (See wakeup1 call in proc_exit.)
     sleep(proc, &ptable.lock);  //DOC: wait-sleep
   }
