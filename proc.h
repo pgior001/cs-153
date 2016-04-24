@@ -70,6 +70,7 @@ struct proc {
   int exitStatus;		//Status of the exit call
   struct proc* waitOnMe[10];	//keeps tack of what processes
   int waitOnMeSZ;		//track the size of wait on me
+  int priority;
 };
 
 // Process memory is laid out contiguously, low addresses first:

@@ -159,6 +159,7 @@ fork(void)
   pid = np->pid;
   np->count = 0;
   np->waitOnMeSZ = 0;
+  np->priority = 31;
 
   // lock to force the compiler to emit the np->state write last.
   acquire(&ptable.lock);
@@ -366,6 +367,7 @@ waitpid(int pid, int* status, int options){
         release(&ptable.lock);
         return pid;
       }
+      else break;
     }
 
     // No point waiting if we don't have any children.
@@ -375,7 +377,7 @@ waitpid(int pid, int* status, int options){
     }
     if(proc->parent != p){
       if(p->waitOnMeSZ != (sizeof(p->waitOnMe)/sizeof(p->waitOnMe[0]))){
-	  p->waitOnMe[(sizeof(p->waitOnMe)/sizeof(p->waitOnMe[0]))] = proc;
+	  p->waitOnMe[p->waitOnMeSZ] = proc;
 	  p->waitOnMeSZ = p->waitOnMeSZ + 1;
 	}
       else{
