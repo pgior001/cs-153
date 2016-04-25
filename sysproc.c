@@ -126,3 +126,10 @@ sys_waitpid(void)
   proc->count++;
   return waitpid(pid, (int*)tmp, options);
 }
+
+int
+sys_priority_chance(void)
+{
+  proc->count++;
+  return proc->priority;
+}

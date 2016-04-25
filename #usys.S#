@@ -31,4 +31,4 @@ SYSCALL(sleep)
 SYSCALL(uptime)
 SYSCALL(count)
 SYSCALL(waitpid)
-SYSCALL(priority_chance)
+SSYS

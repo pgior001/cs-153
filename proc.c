@@ -177,7 +177,7 @@ exit(int status)
 {
   struct proc *p;
   int fd;
-
+  
   if(proc == initproc)
     panic("init exiting");
 
@@ -387,6 +387,16 @@ waitpid(int pid, int* status, int options){
     // Wait for children to exit.  (See wakeup1 call in proc_exit.)
     sleep(proc, &ptable.lock);  //DOC: wait-sleep
   }
+}
+
+int
+priority_chance(void)
+{
+  static unsigned long next = 1;
+  unsigned long a = 1103515245, c = 12345;
+  next = a * next + c;
+  int temp = ((unsigned int)(next/65536) % 32768) % 64;
+  return temp;
 }
 
 // A fork child's very first scheduling by scheduler()
