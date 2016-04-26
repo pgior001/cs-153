@@ -133,3 +133,14 @@ sys_priority_chance(void)
   proc->count++;
   return proc->priority;
 }
+
+int
+sys_priorityChange(void)
+{
+  proc->count++;
+  int priority;
+  if(argint(0, &priority) < 0)
+    return -1;
+  priorityChange(priority);
+  return proc->priority;
+}

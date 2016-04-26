@@ -399,6 +399,15 @@ priority_chance(void)
   return temp;
 }
 
+void
+priorityChange(int p)
+{
+  acquire(&ptable.lock);
+  proc->priority = p;
+//  proc->state = RUNNABLE;
+//  sched();
+}
+
 // A fork child's very first scheduling by scheduler()
 // will swtch here.  "Return" to user space.
 void

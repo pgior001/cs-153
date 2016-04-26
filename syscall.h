@@ -23,3 +23,4 @@
 #define SYS_count  22
 #define SYS_waitpid 23
 #define SYS_priority_chance 24
+#define SYS_priorityChange  35

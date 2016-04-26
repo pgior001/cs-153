@@ -26,6 +26,7 @@ int uptime(void);
 int count(void);
 int waitpid(int, int*, int);
 int priority_chance(void);
+void priorityChange(int);
 
 // ulib.c
 int stat(char*, struct stat*);
