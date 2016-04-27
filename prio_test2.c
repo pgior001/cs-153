@@ -23,7 +23,11 @@ int main(){
     }
     if (pid == 0){
       int j = 0;
-      if(getpid() == begin+8){
+      if(getpid() == begin + 5){
+        printf(1," pid = %d, get higher priority\n\n",getpid());
+        priorityChange(33);
+      }
+      if(getpid() == begin + 8){
         printf(1," pid = %d, get higher priority\n\n",getpid());
         priorityChange(33);
       }
@@ -40,10 +44,13 @@ int main(){
   int status;
   while(ki >= 0){
     ki = wait(&status);
-    if(ki == begin+8)
-      printf(1," [%d] I should be done first\n",ki);
+    if(ki == begin+5)
+      printf(1," [%d] I should be done first two\n",ki);
+    else if(ki == begin+8)
+      printf(1," [%d] I should be done first two\n",ki);
     else
-      printf(1," [%d] done runing\n",ki); 
+      printf(1," [%d] done runing\n",ki);
+
   }
   exit(0);
   return 0;

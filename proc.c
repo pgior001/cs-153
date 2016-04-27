@@ -159,7 +159,7 @@ fork(void)
   pid = np->pid;
   np->count = 0;
   np->waitOnMeSZ = 0;
-  np->priority = 31;
+  np->priority = 0;
 
   // lock to force the compiler to emit the np->state write last.
   acquire(&ptable.lock);
@@ -279,6 +279,7 @@ void
 scheduler(void)
 {
   struct proc *p;
+  struct proc *px;
 
   for(;;){
     // Enable interrupts on this processor.
@@ -286,9 +287,29 @@ scheduler(void)
 
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
+    int flag = 0;
+    int temp = ptable.proc->priority;
+    px = ptable.proc;
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+    {
+      if(p->state == RUNNABLE)
+      {
+      if(p->priority != temp)
+      {
+        flag = 1;
+        if(p->priority > px->priority)
+          px = p;
+      }
+      }
+    }
+    p = 0;
+    switch(flag){
+      
+    case 0:
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
       if(p->state != RUNNABLE)
         continue;
+
 
       // Switch to chosen process.  It is the process's job
       // to release ptable.lock and then reacquire it
@@ -302,6 +323,29 @@ scheduler(void)
       // Process is done running for now.
       // It should have changed its p->state before coming back.
       proc = 0;
+    }
+    break;
+    case 1:
+
+
+        // Switch to chosen process.  It is the process's job                  
+        // to release ptable.lock and then reacquire it                       
+        // before jumping back to us.                                          
+
+        proc = px;
+        switchuvm(px);
+        px->state = RUNNING;
+        swtch(&cpu->scheduler, proc->context);
+        switchkvm();
+        
+        // Process is done running for now.                                    
+        // It should have changed its p->state before coming back. 
+        proc = 0;
+      break;
+
+    default:
+      cprintf("Help\n");
+      break;
     }
     release(&ptable.lock);
 
@@ -402,7 +446,7 @@ priority_chance(void)
 void
 priorityChange(int p)
 {
-  acquire(&ptable.lock);
+  //acquire(&ptable.lock);
   proc->priority = p;
 //  proc->state = RUNNABLE;
 //  sched();
