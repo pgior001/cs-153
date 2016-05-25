@@ -174,6 +174,7 @@ UPROGS=\
 	_usertests\
 	_test\
 	_test1\
+	_tyield\
 	_frisbee\
 	_test_sleep\
 	_wc\
@@ -250,6 +251,7 @@ EXTRA=\
 	printf.c umalloc.c test1.c test.c test_sleep.c frisbee.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
 	.gdbinit.tmpl gdbutil semTest.c H2O.c monkey.c problem_3.c\
+	tyield.c\
 
 dist:
 	rm -rf dist

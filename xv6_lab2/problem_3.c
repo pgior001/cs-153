@@ -13,6 +13,7 @@ semaphore c;
 int bc = 0;
 int mc = 0;
 int cc = 0;
+int extra = 0;
 
 
 int main(int argc, char *argv[]){
@@ -23,10 +24,12 @@ int main(int argc, char *argv[]){
    initSemaphore(&d, 0);
 
    void *tid = thread_create(MissionaryArrives, 0);
- //  tid = thread_create(CannibalArrives, 0);
    tid = thread_create(MissionaryArrives, 0);
    tid = thread_create(MissionaryArrives, 0);
-   
+   tid = thread_create(MissionaryArrives, 0);
+   //tid = thread_create(MissionaryArrives, 0);
+   //tid = thread_create(MissionaryArrives, 0);
+
    if(tid <= 0){
        printf(1,"wrong happen");
        exit();
@@ -39,6 +42,7 @@ int main(int argc, char *argv[]){
 
 void CannibalArrives(void *arg_ptr){
     sem_acquire(&b);
+    printf(1, "cannibal\n");
     sem_acquire(&c);
     ++cc;
     sem_acquire(&m);
@@ -61,9 +65,17 @@ void CannibalArrives(void *arg_ptr){
 }
 
 void MissionaryArrives(void *arg_ptr){
-    sem_acquire(&b);
+    printf(1, "missionary\n");
     sem_acquire(&c);
     sem_acquire(&m);
+    if(mc + cc == 3 && extra == 0)
+    {
+       sem_signal(&m);
+       sem_signal(&c);
+       while(mc + cc == 3 && extra == 0);
+       sem_acquire(&c);
+       sem_acquire(&m);
+    }
     ++mc;
     if(mc + cc == 3)
     {
@@ -87,7 +99,6 @@ void boat(void *arg_ptr){
     printf(1, "looking for passengers\n");
     sem_acquire(&c);
     sem_acquire(&m);
-    printf(1, "%d\n", mc ==1);
     if(mc == 1){
        sem_signal(&b);
     }

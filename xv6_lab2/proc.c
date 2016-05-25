@@ -564,6 +564,18 @@ twakeup(int tid){
     release(&ptable.lock);
 }
 
+void
+thread_yield(void){
+    acquire(&ptable.lock);  //DOC: yieldlock
+    if(proc->isthread){
+    	proc->state = RUNNABLE;
+   	sched();
+    }
+    else
+      cprintf("error thread_yield called on non thread");
+    release(&ptable.lock);
+}
+
 // Wake up all processes sleeping on chan.
     void
 wakeup(void *chan)
