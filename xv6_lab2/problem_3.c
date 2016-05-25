@@ -8,10 +8,9 @@ void MissionaryArrives(void *arg_ptr);
 
 semaphore b;
 semaphore d;
-semaphore p1;
-semaphore p2;
 semaphore m;
 semaphore c;
+int bc = 0;
 int mc = 0;
 int cc = 0;
 
@@ -19,70 +18,97 @@ int cc = 0;
 int main(int argc, char *argv[]){
 
    initSemaphore(&b, 3);
-   initSemaohore(&p1, 1);
-   initSemaphore(&p2, 1);
    initSemaphore(&c, 1);
    initSemaphore(&m, 1);
-   initSemaphore(&d, 0)
+   initSemaphore(&d, 0);
 
-   void *tid = thread_create(test_func, 0);
+   void *tid = thread_create(MissionaryArrives, 0);
+ //  tid = thread_create(CannibalArrives, 0);
+   tid = thread_create(MissionaryArrives, 0);
+   tid = thread_create(MissionaryArrives, 0);
+   
    if(tid <= 0){
        printf(1,"wrong happen");
        exit();
    } 
-   while(wait()>= 0)
-   
+   while(wait()>= 0);
+
    exit();
+   return 0;
 }
 
-//void test_func(void *arg_ptr){
 void CannibalArrives(void *arg_ptr){
     sem_acquire(&b);
     sem_acquire(&c);
-    ++c;
-    sem_signal(&c);
-    sem_signal(&d);
+    ++cc;
+    sem_acquire(&m);
+    if(mc + cc == 3)
+    {
+      sem_signal(&m);
+      sem_signal(&c);
+      void *tid = thread_create(boat, 0);
+      printf(1, "Cannibal starting boat crossing\n");
+         if(tid <= 0){
+           printf(1,"wrong happen");
+           exit();
+         }
+    }
+    else{
+      sem_signal(&m);
+      sem_signal(&c);
+    }
     texit();
 }
 
 void MissionaryArrives(void *arg_ptr){
     sem_acquire(&b);
+    sem_acquire(&c);
     sem_acquire(&m);
-    ++m;
-    sem_signal(&m);
-    sem_signal(&d);
+    ++mc;
+    if(mc + cc == 3)
+    {
+      sem_signal(&c);
+      sem_signal(&m);
+      void *tid = thread_create(boat, 0);
+      printf(1, "Missionary starting boat crossing\n");
+         if(tid <= 0){
+           printf(1,"wrong happen");
+           exit();
+         }
+    }
+    else{
+      sem_signal(&c);
+      sem_signal(&m);
+    }
     texit();
 }
 
 void boat(void *arg_ptr){
-    sem_acquire(&p2);
-    sem_acquire(&d);
-    sem_acquire(&d);
-    sem_acquire(&d);
-    sem_acquire(&m)
-    while(mc == 1){
+    printf(1, "looking for passengers\n");
+    sem_acquire(&c);
+    sem_acquire(&m);
+    printf(1, "%d\n", mc ==1);
+    if(mc == 1){
        sem_signal(&b);
-       sem_signal(&m)
-       sem_acquire(&m);
     }
+    sem_signal(&m);
+    sem_signal(&c);
+    while(mc == 1 && cc != 3);
+    sem_acquire(&c);
+    sem_acquire(&m);
     if(mc == 2){
-      sem_acquire(&c);
       printf(1, "Two missionaires and one cannibal across \n");
       mc = mc-2;
       --cc;
-      sem_signal(&c);
     }
     else if(mc ==3){
-      printf(1, "Three missionaries across\n")
+      printf(1, "Three missionaries across\n");
       mc = mc - 3;
     }
     else{
-      sem_acquire(&c);
       printf(1, "Three cannibals across\n");
       cc = cc-3;
-      sem_signal(&c);
     }
-    acquire(&c);
     if(cc == 0 && mc ==0){
       sem_signal(&b);
     }

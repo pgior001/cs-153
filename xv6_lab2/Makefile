@@ -166,6 +166,7 @@ UPROGS=\
 	_ls\
 	_mkdir\
 	_monkey\
+	_problem_3\
 	_rm\
 	_sh\
 	_semTest\
@@ -248,7 +249,7 @@ EXTRA=\
 	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
 	printf.c umalloc.c test1.c test.c test_sleep.c frisbee.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
-	.gdbinit.tmpl gdbutil semTest.c H2O.c monkey.c\
+	.gdbinit.tmpl gdbutil semTest.c H2O.c monkey.c problem_3.c\
 
 dist:
 	rm -rf dist
