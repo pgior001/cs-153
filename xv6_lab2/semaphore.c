@@ -9,13 +9,13 @@ initSemaphore(semaphore *s, int size)
 {
   s->maxHold = size;
   s->queueSize = 0;
-  lock_init(s->lock);
+  lock_init(&s->lock);
 }
 
 void
 sem_acquire(semaphore* s)
 {
-  lock_acquire(s->lock);
+  lock_acquire(&s->lock);
   if(s->maxHold == 0)
   {
     if(s->queueSize == 60)
@@ -27,22 +27,21 @@ sem_acquire(semaphore* s)
     {
       s->queue[s->queueSize] = getpid();
       s->queueSize++;
-      lock_release(s->lock);
+      lock_release(&s->lock);
       tsleep();
-      lock_acquire(s->lock);
     }
   }
   else
   {
     s->maxHold--;
+    lock_release(&s->lock);
   }
-  lock_release(s->lock);
 }
 
 void
 sem_signal(semaphore *s)
 {
-  lock_acquire(s->lock);
+  lock_acquire(&s->lock);
   if(s->queueSize == 0)
   {
     s->maxHold++;
@@ -58,5 +57,5 @@ sem_signal(semaphore *s)
     s->queueSize--;
     twakeup(tmp);
   }
-  lock_release(s->lock);
+  lock_release(&s->lock);
 }

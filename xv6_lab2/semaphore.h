@@ -5,7 +5,7 @@ typedef struct{
   int maxHold;
   int queue[60];
   int queueSize;
-  lock_t *lock;
+  lock_t lock;
 } semaphore;
 
 void 

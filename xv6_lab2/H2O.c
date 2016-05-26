@@ -7,14 +7,16 @@ void O(void * arg_ptr);
 
 semaphore Hydrogen;
 semaphore Oxygen;
-semaphore Water;
+//semaphore Water;
+lock_t lock;
 int water = 0;
 
 int main(int argc, char ** argv)
 {
   initSemaphore(&Hydrogen, 0);
   initSemaphore(&Oxygen, 0);
-  initSemaphore(&Water, 1);
+//  initSemaphore(&Water, 1);
+  lock_init(&lock);
   void *tid;
   int i;
   for(i = 0; i < 10; i++)
@@ -54,7 +56,8 @@ void H(void * arg_ptr)
 {
   sem_signal(&Hydrogen);
   sem_acquire(&Oxygen);
-  exit();
+  printf(1, "hydrogen finished\n");
+  texit();
 }
 
 void O(void * arg_ptr){
@@ -62,9 +65,11 @@ void O(void * arg_ptr){
   sem_acquire(&Hydrogen);
   sem_signal(&Oxygen);
   sem_signal(&Oxygen);
-  sem_acquire(&Water);
+//  sem_acquire(&Water);
+  lock_acquire(&lock);
   ++water;
-  sem_signal(&Water);
+  lock_release(&lock);
+//  sem_signal(&Water);
   printf(1, "%d water molecules created\n", water);
-  exit();
+  texit();
 }
