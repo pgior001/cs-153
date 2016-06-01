@@ -166,6 +166,7 @@ UPROGS=\
 	_kill\
 	_ln\
 	_ls\
+	_nullPTRtest\
 	_mkdir\
 	_monkey_test\
 	_monkey_test2\
@@ -181,6 +182,7 @@ UPROGS=\
 	_test\
 	_test1\
 	_tyield\
+	_tyield2\
 	_frisbee\
 	_test_sleep\
 	_wc\
@@ -256,9 +258,10 @@ EXTRA=\
 	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
 	printf.c umalloc.c test1.c test.c test_sleep.c frisbee.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
-	.gdbinit.tmpl gdbutil semTest.c boattest.c\
+	.gdbinit.tmpl gdbutil semTest.c boattest.c nullPTRtest.c\
 	tyield.c boattest2.c boattest3.c H2Otest.c H2Otest2.c\
 	H2Otest3.c monkeytest.c monkeytest2.c monkeytest3.c\
+	tyield2.c\
 
 dist:
 	rm -rf dist

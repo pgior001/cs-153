@@ -572,7 +572,7 @@ thread_yield(void){
    	sched();
     }
     else
-      cprintf("error thread_yield called on non thread");
+      cprintf("error thread_yield called on non thread\n");
     release(&ptable.lock);
 }
 
