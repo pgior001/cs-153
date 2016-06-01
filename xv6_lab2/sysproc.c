@@ -134,3 +134,14 @@ sys_thread_yield(void)
   thread_yield();
   return 0; 
 }
+
+int
+sys_nrand(void)
+{
+  int num;
+  if(argint(0,&num) < 0){
+    return -1;
+  }
+  int temp = nrand(num);
+  return temp;
+}

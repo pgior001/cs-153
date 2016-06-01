@@ -159,14 +159,20 @@ UPROGS=\
 	_echo\
 	_forktest\
 	_grep\
-        _H2O\
+        _H2Otest\
+	_H2Otest2\
+	_H2Otest3\
 	_init\
 	_kill\
 	_ln\
 	_ls\
 	_mkdir\
-	_monkey\
-	_problem_3\
+	_monkey_test\
+	_monkey_test2\
+	_monkey_test3\
+	_boattest\
+	_boattest2\
+	_boattest3\
 	_rm\
 	_sh\
 	_semTest\
@@ -250,8 +256,9 @@ EXTRA=\
 	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
 	printf.c umalloc.c test1.c test.c test_sleep.c frisbee.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
-	.gdbinit.tmpl gdbutil semTest.c H2O.c monkey.c problem_3.c\
-	tyield.c\
+	.gdbinit.tmpl gdbutil semTest.c boattest.c\
+	tyield.c boattest2.c boattest3.c H2Otest.c H2Otest2.c\
+	H2Otest3.c monkeytest.c monkeytest2.c monkeytest3.c\
 
 dist:
 	rm -rf dist

@@ -103,6 +103,7 @@ extern int sys_texit(void);
 extern int sys_tsleep(void);
 extern int sys_twakeup(void);
 extern int sys_thread_yield(void);
+extern int sys_nrand(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -131,6 +132,7 @@ static int (*syscalls[])(void) = {
 [SYS_tsleep]   sys_tsleep,
 [SYS_twakeup]   sys_twakeup,
 [SYS_thread_yield] sys_thread_yield,
+[SYS_nrand]   sys_nrand,
 };
 
 void
