@@ -27,6 +27,7 @@ void texit(void) __attribute__((noreturn));
 void tsleep(void);
 void twakeup(int);
 void thread_yield(void);
+int nrand(int i);
 
 // ulib.c
 int stat(char*, struct stat*);

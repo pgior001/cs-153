@@ -652,3 +652,12 @@ void tsleep(void){
     release(&ptable.lock);
 
 }
+
+int nrand(int i)
+{
+  static unsigned long next = 1;
+  unsigned long a = 1103515245, c = 12345;
+  next = a * next + c;
+  int temp = ((unsigned int)(next/65536) % 32768) % i;
+  return temp;
+}
